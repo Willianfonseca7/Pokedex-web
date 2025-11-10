@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pokémon WebApp</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  
+
+</head>
+<body>
+  <!-- 🔴 NAVBAR -->
+  <nav>
+    <h1>Pokémon WebApp</h1>
+
+    <!-- Botão hamburguer (mobile) -->
+    <button
+      id="navToggle"
+      class="navbar-dropdown-toggle"
+      aria-expanded="false"
+      aria-controls="navControls"
+      aria-label="Menu"
+      title="Menu"
+      type="button"
+    >
+      ☰
+    </button>
+
+    <!-- Controles -->
+    <div class="controls" id="navControls">
+      <input id="pokemonInput" type="text" placeholder="Search Pokémon..." aria-label="Search Pokémon" />
+      <button id="searchBtn" type="button">Search</button>
+
+      <!-- Home + dropdown interno -->
+      <div class="home-dropdown">
+        <button id="btnHome" type="button" aria-haspopup="true" aria-expanded="false">Home ▾</button>
+        <div id="homeMenu" class="home-menu" role="menu" aria-hidden="true">
+          <button type="button" id="homeShowAll" role="menuitem">Show All</button>
+          <button type="button" id="homeShowFavs" role="menuitem">Show Favorites</button>
+        </div>
+      </div>
+
+      <button id="btnHistory" type="button">History</button>
+      <button id="btnAbout" type="button">About</button>
+      <button id="themeToggle" type="button" class="darkmode-toggle" title="Toggle dark mode">🌙</button>
+    </div>
+  </nav>
+
+  <!-- 🧩 CONTEÚDO -->
+  <main class="container" id="mainContent">
+    <!-- About -->
+    <section id="aboutSection" class="hidden" aria-labelledby="aboutTitle">
+      <div class="about-card">
+        <h2 id="aboutTitle">About</h2>
+        <p>
+          Simple Pokédex using
+          <a href="https://pokeapi.co/" target="_blank" rel="noopener">PokéAPI</a>.
+          “History” shows Pokémon anime episodes by season via
+          <a href="https://www.tvmaze.com/api" target="_blank" rel="noopener">TVMaze</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- History (episódios por temporada) -->
+    <section id="historySection" class="hidden" aria-labelledby="historyTitle">
+      <div class="about-card">
+        <h2 id="historyTitle">History — Pokémon Anime Episodes</h2>
+        <p class="muted">
+          Data from TVMaze (no API key needed). Click a season to expand and see episode cards.
+        </p>
+        <div id="historyStatus" class="status" role="status" aria-live="polite">Loading episodes...</div>
+        <div id="seasonsContainer" class="seasons-container"></div>
+      </div>
+    </section>
+
+    <!-- Home: Grid de cards Pokémon -->
+    <section id="pokemonContainer" aria-label="Pokémon list"></section>
+
+    <!-- Load More (Home) -->
+    <div class="load-more-container" aria-hidden="false">
+      <button id="loadMoreBtn" type="button">Load More</button>
+    </div>
+  </main>
+
+  
+
+  <!-- 🪟 Modal genérico -->
+  <div id="modalOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Title</h3>
+        <div class="modal-actions">
+          <button class="modal-close" id="modalCloseBtn" type="button" aria-label="Close dialog">✖</button>
+        </div>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ⚡ Footer Criativo -->
+<footer class="site-footer">
+    <!-- Onda decorativa -->
+    <svg class="footer-wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,64L60,58.7C120,53,240,43,360,53.3C480,64,600,96,720,101.3C840,107,960,85,1080,69.3C1200,53,1320,43,1380,37.3L1440,32L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+    </svg>
+  
+    <div class="footer-inner">
+      <!-- Brand -->
+      <div class="foot-col brand">
+        <div class="brand-row">
+          <span class="brand-logo" aria-hidden="true">
+            <!-- Pokébola minimalista -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2a10 10 0 0 0-9.5 7h4a6.5 6.5 0 0 1 11 0h4A10 10 0 0 0 12 2zm0 20a10 10 0 0 0 9.5-7h-4a6.5 6.5 0 0 1-11 0h-4A10 10 0 0 0 12 22zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+            </svg>
+          </span>
+          <strong>Pokémon WebApp</strong>
+        </div>
+        <p class="foot-sub">Explore, favorite and compare your favorite Pokémon.</p>
+  
+        <div class="foot-badges">
+          <a class="badge" href="https://pokeapi.co/" target="_blank" rel="noopener">Powered by PokéAPI</a>
+          <a class="badge" href="https://www.tvmaze.com/api" target="_blank" rel="noopener">TVMaze Episodes</a>
+        </div>
+      </div>
+  
+      <!-- Links rápidos -->
+      <div class="foot-col links">
+        <h4>Shortcuts</h4>
+        <ul>
+          <li><a href="#" data-footnav="all">Home (All)</a></li>
+          <li><a href="#" data-footnav="favs">Favorites Only</a></li>
+          <li><a href="#" data-footnav="history">History</a></li>
+          <li><a href="#" data-footnav="about">About</a></li>
+        </ul>
+      </div>
+  
+      <!-- Social -->
+      <div class="foot-col social">
+        <h4>Connect</h4>
+        <div class="social-row">
+          <a class="social-btn" href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.5v-2c-3.4.8-4.1-1.6-4.1-1.6-.6-1.5-1.5-1.9-1.5-1.9-1.2-.8.1-.8.1-.8 1.3.1 2 1.3 2 1.3 1.2 2 3.1 1.4 3.9 1.1.1-.9.5-1.4.9-1.8-2.7-.3-5.6-1.3-5.6-6 0-1.3.5-2.4 1.2-3.3-.1-.3-.5-1.6.1-3.3 0 0 1-.3 3.4 1.2a11.7 11.7 0 0 1 6.2 0c2.4-1.5 3.4-1.2 3.4-1.2.6 1.7.2 3 .1 3.3.8.9 1.2 2 1.2 3.3 0 4.7-2.9 5.6-5.6 5.9.5.4 1 1.2 1 2.4v3.5c0 .3.2.6.8.5A12 12 0 0 0 12 .5z"/></svg>
+          </a>
+          <a class="social-btn" href="https://twitter.com/" target="_blank" rel="noopener" aria-label="Twitter/X">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 3H16l-4 6.6L8.1 3H3.5l6.4 10.8L3.3 21h4.3l4.6-7.2L16 21h4.5L14.3 10.5 20.2 3z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  
+    <div class="foot-bottom">
+      <small>© <span id="yearNow"></span> Made with ❤️ by Willian. Not affiliated with Nintendo/The Pokémon Company.</small>
+      <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+    </div>
+  </footer>
+  
+
+  <script src="script.js" defer></script>
+</body>
+</html>

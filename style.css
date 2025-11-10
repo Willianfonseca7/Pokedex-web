@@ -1,0 +1,363 @@
+:root { --green:#4e4e4d; --green-2:#006e32; }
+* { box-sizing: border-box; }
+.hidden { display:none !important; }
+
+/* ---------- Base ---------- */
+body {
+  font-family: "Josefin Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background-color: #f5f9f6;
+  color: #333;
+  margin: 0;
+}
+body.dark { background:#0f0f0f; color:#f5f5f5; }
+
+/* ---------- NAV ---------- */
+nav {
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  padding: 14px 16px; background:#f40a0a; color:#f1c40f;
+  position:sticky; top:0; z-index:50;
+}
+nav h1 { margin:0; font-size:1.5rem; letter-spacing:.4px; }
+.navbar-dropdown-toggle {
+  margin-left:auto; display:none;
+  background:#084e2d; color:#fff; border:0; padding:.55rem .8rem; border-radius:8px; cursor:pointer;
+}
+
+/* Controles (LIGHT e DARK agora com o MESMO desenho “pill”) */
+.controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-left:auto; }
+.controls input,
+.controls button {
+  background:#ffffff;
+  color:#222;
+  border:1px solid #e1e1e1;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:0.95rem;
+  line-height:1;
+  box-shadow: 0 1px 0 rgba(0,0,0,.03);
+  cursor:pointer;
+}
+.controls input { cursor:text; min-width:240px; }
+.controls input::placeholder { color:#8a8a8a; }
+.controls button:hover { background:#f5f5f5; }
+
+/* Home dropdown (light) */
+.home-dropdown { position: relative; }
+.home-menu {
+  position:absolute; top:110%; left:0;
+  background:#fff; border:1px solid #e5e5e5; border-radius:10px;
+  padding:.4rem; min-width: 180px; box-shadow:0 10px 30px rgba(0,0,0,.08);
+  display:none;
+}
+.home-menu.show { display:block; }
+.home-menu button {
+  width:100%; text-align:left; background:transparent; border:0; border-radius:8px;
+  padding:.55rem .6rem; cursor:pointer;
+}
+.home-menu button:hover { background: #f3f6f4; }
+
+/* ---------- NAV – Dark do print (barra amarela, pills escuras) ---------- */
+body.dark nav { background:#f1c40f; color:#111; }
+body.dark nav h1 { color:#111; }
+body.dark .controls input,
+body.dark .controls button {
+  background:#111;
+  color:#f5f5f5;
+  border:1px solid #2b2b2b;
+  box-shadow:none;
+}
+body.dark .controls input::placeholder { color:#9a9a9a; }
+body.dark .controls button:hover { background:#1a1a1a; }
+body.dark .home-menu { background:#141414; border-color:#2b2b2b; }
+body.dark .home-menu button:hover { background:#1a1a1a; }
+
+/* ---------- Layout principal ---------- */
+.container { padding: 16px; }
+
+/* GRID de cards */
+#pokemonContainer {
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px; margin: 12px 0 24px 0;
+}
+
+/* CARD */
+.team-card {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 1.2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+.team-card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+.team-card img.main-img { width: 90px; height: 90px; object-fit: contain; margin: 8px auto 10px auto; display:block; }
+.team-card h3 { color: var(--green); margin: 10px 0 5px 0; font-size: 1.1rem; letter-spacing:.3px; }
+.team-card p { font-size: 0.92rem; margin: 4px 0; }
+
+/* CARD – Dark */
+body.dark .team-card {
+  background:#121212;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04), 0 6px 24px rgba(0,0,0,0.35);
+}
+body.dark .team-card h3 { color:#f5f5f5; }
+
+/* ---------- Favorito (Pokébola) ---------- */
+.favorite-btn, .icon-favorite {
+  position:absolute; top:14px; right:16px;
+  z-index:20; /* ↑ para garantir clique acima de tudo */
+  background: transparent; border: none; cursor: pointer;
+  width: 36px; height: 36px; display: grid; place-items: center;
+  color:#111; /* preto */
+  transition: color 0.2s, filter 0.2s;
+  border-radius:999px; outline:none; pointer-events:auto;
+}
+.favorite-btn svg, .icon-favorite svg { width:22px; height:22px; fill: currentColor; }
+.favorite-btn.favorited, .icon-favorite.favorited {
+  color: #ff5252; /* vermelho ao clicar */
+  filter: drop-shadow(0 1px 8px rgba(255, 82, 82, 0.35));
+}
+body.dark .favorite-btn, body.dark .icon-favorite { color:#e6e6e6; }
+body.dark .favorite-btn.favorited, body.dark .icon-favorite.favorited {
+  color:#ff5252; filter: drop-shadow(0 2px 10px rgba(255,82,82,.45));
+}
+
+/* ---------- Comparar ---------- */
+.icon-compare {
+  position:absolute; top:14px; left:16px;
+  z-index:20; /* ↑ garante clique no dark */
+  background:#ffffff; border:2px solid #020202; border-radius:999px; cursor:pointer; color:#666; font-size:1.2rem;
+  width: 32px; height:32px; display:grid; place-items:center; pointer-events:auto;
+  transition: background 0.15s;
+}
+.icon-compare.active {
+  color:#2d7ef7;
+  background: #85ff22 !important;
+}
+body.dark .icon-compare { color:#000000; }
+.icon-compare.active { color:#000000; }
+body.dark .icon-compare { color:#060505; }
+
+/* ---------- About / History ---------- */
+.about-card {
+  background:#fff; color:#222; border-radius:12px; border:1px solid #eee;
+  padding: 14px 16px; max-width: 980px; margin: 0 auto 16px;
+}
+.muted { opacity:.85; }
+.status { margin:.4rem 0 .8rem; }
+.seasons-container { margin-top:.6rem; }
+.season-block { margin: .6rem 0; border:1px solid #eaeaea; border-radius:10px; padding:.4rem .8rem; }
+.season-block > summary { cursor:pointer; display:flex; align-items:center; justify-content: space-between; padding:.5rem 0; }
+.episodes-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:12px; padding:.4rem 0 1rem; }
+.ep-card { background:#fff; border:1px solid #eee; border-radius:10px; overflow:hidden; cursor:pointer; }
+.ep-card img { width:100%; height:140px; object-fit:cover; display:block; }
+.ep-meta { padding:.6rem .7rem; }
+.ep-title { margin:0 0 .2rem 0; font-size: .98rem; }
+.ep-sub { margin:0; opacity:.75; font-size:.86rem; }
+body.dark .about-card { background:#181818; color:#eee; border-color:#262626; }
+body.dark .season-block { border-color:#2a2a2a; }
+body.dark .ep-card { background:#181818; border-color:#262626; }
+
+/* ---------- Load More / Footer ---------- */
+.load-more-container { text-align:center; margin: 1.2rem 0 2rem; }
+#loadMoreBtn {
+  background:#000000;
+  color:#ffffff;
+  border:1px solid #000000;
+  border-radius:999px;
+  padding:.9rem 1.2rem;
+  cursor:pointer;
+}
+#loadMoreBtn:hover { background:#f5f5f5; }
+/* Dark estilo print */
+body.dark #loadMoreBtn { background:#f1c40f; color:#111; border-color:#e7b90e; }
+body.dark #loadMoreBtn:hover { filter:brightness(0.95); }
+
+footer { text-align:center; background:#f8f8f8; color:#555; padding: 1rem; border-top:1px solid #e0e0e0; }
+body.dark footer { background:#f1c40f; color:#111; border-top-color:#e7b90e; }
+
+/* ---------- Modal ---------- */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); display:none; align-items: center; justify-content: center; padding: 20px; z-index: 200; }
+.modal-overlay:not(.hidden) { display:flex; }
+.modal { width: min(920px, 96vw); background:#fff; color:#222; border-radius: 12px; overflow:hidden; box-shadow: 0 30px 60px rgba(0,0,0,.35); }
+.modal-header { display:flex; align-items:center; justify-content: space-between; padding: 12px 14px; background:#f4f4f4; }
+.modal-title { font-weight: 600; margin:0; }
+.modal-body { padding: 16px; max-height: 70vh; overflow:auto; }
+.modal-close { background:transparent; border:0; font-size:22px; cursor:pointer; }
+body.dark .modal { background:#1a1a1a; color:#f1f1f1; }
+body.dark .modal-header { background:#161616; }
+
+/* ---------- Segurança contra bloqueio de clique ---------- */
+.theme-overlay { pointer-events: none; }
+.team-card::before, .team-card::after { pointer-events: none; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .navbar-dropdown-toggle { display:inline-block; }
+  .controls { display:none; width:100%; margin-left:0; }
+  .controls.dropdown { display:flex; }
+}
+
+/* ===== Footer Criativo ===== */
+.site-footer {
+  margin-top: 32px;
+  position: relative;
+  background: #f8f8f8;
+  color: #333;
+  border-top: 1px solid #e9e9e9;
+}
+.footer-wave {
+  display:block; width:100%; height:80px;
+  margin-bottom: -1px; /* encaixa na borda */
+}
+.footer-wave path {
+  fill: #f8f8f8;
+}
+.footer-inner {
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px 10px;
+}
+.foot-col h4 { margin:6px 0 8px; font-size:1rem; letter-spacing:.3px; }
+.foot-col ul { list-style:none; padding:0; margin:0; display:grid; gap:6px; }
+.foot-col ul a {
+  text-decoration:none; color:#2a2a2a; padding:6px 8px; border-radius:8px;
+}
+.foot-col ul a:hover { background:#ececec; }
+
+.brand .brand-row { display:flex; align-items:center; gap:10px; font-size:1.05rem; }
+.brand .brand-logo { display:inline-grid; place-items:center; width:34px; height:34px; border-radius:999px;
+  background:#ff5252; color:#fff; box-shadow:0 6px 18px rgba(255,82,82,.25);
+}
+.brand .brand-logo svg { width:20px; height:20px; fill:currentColor; }
+.foot-sub { margin:.4rem 0 .6rem; opacity:.9; }
+
+.foot-badges { display:flex; gap:8px; flex-wrap:wrap; }
+.badge {
+  display:inline-block; font-size:.85rem; padding:6px 10px; border-radius:999px;
+  border:1px solid #e4e4e4; color:#444; background:#fff; text-decoration:none;
+}
+.badge:hover { background:#f3f3f3; }
+
+/* Social */
+.social-row { display:flex; gap:10px; }
+.social-btn {
+  width:38px; height:38px; border-radius:12px; display:grid; place-items:center;
+  background:#fff; border:1px solid #e4e4e4; text-decoration:none; color:#222;
+}
+.social-btn svg { width:20px; height:20px; fill:currentColor; }
+.social-btn:hover { background:#f3f3f3; }
+
+/* Bottom line */
+.foot-bottom {
+  border-top:1px dashed #e4e4e4;
+  margin-top:12px; padding:10px 16px 16px;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  position:relative;
+}
+.back-to-top {
+  position:absolute; right:16px;
+  background:#111; color:#fff; border:0; border-radius:999px;
+  width:38px; height:38px; display:grid; place-items:center; cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+.back-to-top:hover { filter:brightness(.95); }
+
+/* ---- Dark theme ---- */
+body.dark .site-footer {
+  background:#171717; color:#eee; border-top-color:#222;
+}
+body.dark .footer-wave path { fill:#171717; }
+body.dark .foot-col ul a { color:#eaeaea; }
+body.dark .foot-col ul a:hover { background:#1f1f1f; }
+body.dark .social-btn { background:#141414; border-color:#2a2a2a; color:#eee; }
+body.dark .social-btn:hover { background:#1b1b1b; }
+body.dark .badge { background:#141414; border-color:#2a2a2a; color:#ddd; }
+body.dark .badge:hover { background:#1b1b1b; }
+body.dark .foot-bottom { border-top-color:#262626; }
+body.dark .back-to-top {
+  background:#f1c40f; color:#111; box-shadow:0 10px 24px rgba(241,196,15,.35);
+}
+
+/* Responsivo */
+@media (max-width: 860px) {
+  .footer-inner { grid-template-columns: 1fr; }
+  .foot-bottom { padding-bottom: 70px; }
+  .back-to-top { position: fixed; right: 16px; bottom: 16px; }
+}
+
+/* ===== Evolution Chain dentro do Modal ===== */
+.evo-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: start;
+  margin-top: 10px;
+}
+
+.evo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.evo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.evo-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
+.evo-card span {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: #333;
+}
+
+/* Dark mode */
+body.dark .evo-card {
+  background: #181818;
+  box-shadow: 0 2px 10px rgba(255,255,255,0.04);
+}
+body.dark .evo-card span {
+  color: #f5f5f5;
+}
+/* ===== Botão "X" do Modal ===== */
+.modal-close {
+  color: #ff5252;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+  color: #ff0000;
+  transform: scale(1.1);
+}
+
+/* Dark mode: mantém contraste */
+body.dark .modal-close {
+  color: #ff7070;
+}
+body.dark .modal-close:hover {
+  color: #ff3b3b;
+}
+
