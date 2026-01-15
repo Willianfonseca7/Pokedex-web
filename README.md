@@ -1,4 +1,4 @@
-# 🎮 Pokémon WebApp
+# 🎮 Pokedex-web
 
 Eine interaktive Pokédex-Anwendung, entwickelt mit **HTML, CSS und reinem JavaScript**, die Daten in Echtzeit von der [PokéAPI](https://pokeapi.co/) abruft.  
 Dieses Projekt ist Teil meines Frontend-Portfolios und wurde erstellt, um **DOM-Manipulation, API-Integration und responsives Layout** zu üben.
