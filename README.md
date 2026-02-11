@@ -49,4 +49,4 @@ Willian Santos Fonseca
 Frontend-Entwickler in Ausbildung – Syntax Institut (Berlin)
 📍 Düsseldorf, Deutschland
 
-https://willianfonseca7.github.io/Pokedex-web/
+
